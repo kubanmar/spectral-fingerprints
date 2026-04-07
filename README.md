@@ -1,16 +1,16 @@
 Fingerprinting of materials based on their electronic structure.
 
-Python package to compute fingerprints of the electronic density-of-states (DOS) and evaluate the similarity of materials based on their electronic structures.
+Python package to compute binary valued fingerprints of spectral quantities and evaluate their similarity.
 
-This package implements the DOS fingerprints and the similarity metrics introduced in Refs. [1,2]. 
-
-Our DOS fingerprints can be tailored to target specific ranges of the energy spectrum. The computed fingerprints allow for the evaluation of the similarity of the electronic structure.
+This package implements the electronic density-of-states fingerprints and the similarity metrics introduced in Refs. [1,2]. 
 
 As a similarity measure we use the Tanimoto coefficient [3].
 
+This package is the continuation of https://github.com/kubanmar/dos-fingerprints.
+
 # Usage
 
-Fingerprints are instances of the `SpectralFingerprint()` class and can be calculated by providing the energy in [eV] and the DOS in [states/unit cell/eV] to the `calculate()` method. Furthermore, the energy axis can be discretized over a non-uniform grid. For this, specific parameters must be provided. By default, the grid is specialized on the energy range between -10 and 5 eV, thereby emphasizing the upper valence region.
+Fingerprints of, e.g., the electronic density-of-states (DOS), are instances of the `SpectralFingerprint()` class and can be calculated by providing, e.g., the energy in [eV] and the DOS in [states/unit cell/eV] to the `calculate()` method. Furthermore, the energy axis can be discretized over a non-uniform grid. For this, specific parameters must be provided. By default, the grid is specialized on the energy range between -10 and 5 eV, thereby emphasizing the upper valence region.
 
 ```Python
 from spectral_fingerprints import SpectralFingerprint
@@ -24,11 +24,11 @@ from spectral_fingerprints import tanimoto_similarity
 tc = tanimoto_similarity(dos_fingerprint_1, dos_fingerprint_2)
 ```
 
-Additionally, the `SpectralFingerprint()` ob
+Additionally, the `SpectralFingerprint()` functions `get_similarty` and `get_similarities` can be used:
 
 ```Python
-from spectral_fingerprints import tanimoto_similarity
-tc = tanimoto_similarity(dos_fingerprint_1, dos_fingerprint_2)
+similarity = dos_fingerprint_1.get_similarity(dos_fingerprint_2)
+similarities = dos_fingerprint_1.get_similarity([dos_fingerprint_1, dos_fingerprint_2])
 ```
 
 

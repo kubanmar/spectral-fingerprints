@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name="spectral_fingerprints"
 version="2.1.1"
-description = "Fingerprints of the electronic density of states of materials."
+description = "Binary-valued fingerprints for describing spectral properties."
 readme = {file = "README.md", content-type = "text/markdown"}
 authors = [
     {name="Martin Kuban et al."}

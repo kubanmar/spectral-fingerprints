@@ -13,14 +13,14 @@ from scipy.constants import electron_volt
 
 class SpectralFingerprint():
     """
-    A fingerprint of the electronic density-of-states (DOS), 
-    obtained by integrating the DOS over discrete intervals
+    A fingerprint of the a spectral quantity, 
+    obtained by integrating the spectrum over discrete intervals
     and binning of the resulting histogram.
     
     **Keyword arguments:**
 
     similarity_function: `Callable`
-        A function that allows to calculate the similarity between two DOS fingerprints    
+        A function that allows to calculate the similarity between two spectral fingerprints    
 
         default: `spectral_fingerprints.similarity.tanimoto_similarity`
 
