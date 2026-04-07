@@ -5,7 +5,7 @@ from pstats import SortKey
 
 import numpy as np
 
-from nomad_dos_fingerprints import DOSFingerprint, Grid
+from spectral_fingerprints import SpectralFingerprint, Grid
 
 x = np.linspace(-15,10, num=int(1e3))
 y = np.sin(x)**2 + 1
@@ -23,7 +23,7 @@ test_grid = Grid.create(**grid_attrs)
 
 calc_params={"grid":test_grid, "convert_data":None}
 
-fp = DOSFingerprint().calculate(x, y, **calc_params)
+fp = SpectralFingerprint().calculate(x, y, **calc_params)
 
 pr = cProfile.Profile()
 pr.enable()

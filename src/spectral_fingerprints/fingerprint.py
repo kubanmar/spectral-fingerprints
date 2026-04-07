@@ -11,7 +11,7 @@ from .similarity import tanimoto_similarity
 from scipy.constants import electron_volt
 
 
-class DOSFingerprint():
+class SpectralFingerprint():
     """
     A fingerprint of the electronic density-of-states (DOS), 
     obtained by integrating the DOS over discrete intervals
@@ -22,7 +22,7 @@ class DOSFingerprint():
     similarity_function: `Callable`
         A function that allows to calculate the similarity between two DOS fingerprints    
 
-        default: `nomad_dos_fingerprints.similarity.tanimoto_similarity`
+        default: `spectral_fingerprints.similarity.tanimoto_similarity`
 
     Additional keyword arguments are passed to the similarity function.
     """
@@ -110,7 +110,7 @@ class DOSFingerprint():
 
         **Returns:**
 
-        self: `DOSFingerprint`
+        self: `SpectralFingerprint`
             Fingerprint after calculation
         """
         if isinstance(convert_data, str) and convert_data.lower() == 'enc':
@@ -168,7 +168,7 @@ class DOSFingerprint():
         **Arguments:**
 
         similarity_function: `Callable`
-            Function for calculating the similarity between `DOSFingerprint` objects.
+            Function for calculating the similarity between `SpectralFingerprint` objects.
 
         Keyword arguments are passed to the similarity function.
         """
@@ -180,7 +180,7 @@ class DOSFingerprint():
 
         **Arguments:**
 
-        fingerprint: `DOSFingerprint`
+        fingerprint: `SpectralFingerprint`
             Other fingerprint to calculate similarity to.
 
         **Returns:**
@@ -190,10 +190,10 @@ class DOSFingerprint():
 
         **Raises:**
 
-        `TypeError`: `fingerprint` is not a `DOSFingerprint`
+        `TypeError`: `fingerprint` is not a `SpectralFingerprint`
         """
-        if not isinstance(fingerprint, DOSFingerprint):
-            raise TypeError("Other fingerprint must be a `DOSFingerprint` object.")
+        if not isinstance(fingerprint, SpectralFingerprint):
+            raise TypeError("Other fingerprint must be a `SpectralFingerprint` object.")
         return self.similarity_function(self, fingerprint)
 
     def get_similarities(self, list_of_fingerprints: List[object]) -> np.ndarray:
@@ -202,7 +202,7 @@ class DOSFingerprint():
 
         **Arguments:**
 
-        list_of_fingerprints: `List[DOSFingerprint]`
+        list_of_fingerprints: `List[SpectralFingerprint]`
             Other fingerprints to calculate similarity to.
 
         **Returns:**
@@ -231,7 +231,7 @@ class DOSFingerprint():
         return bits
 
     def __eq__(self, other):
-        if not isinstance(other, DOSFingerprint):
+        if not isinstance(other, SpectralFingerprint):
             return False
         for attr in ['bins', 'indices', 'stepsize', 'grid_id', 'filling_factor']:
             if getattr(self, attr) != getattr(other, attr):

@@ -2,12 +2,12 @@ import numpy as np
 import pytest
 from bitarray import bitarray
 
-from nomad_dos_fingerprints import tanimoto_similarity
-from nomad_dos_fingerprints import DOSFingerprint, Grid
+from spectral_fingerprints import tanimoto_similarity
+from spectral_fingerprints import SpectralFingerprint, Grid
 from scipy.constants import electron_volt
 
 def test_fails_for_wrong_grid_id_options():
-    fp = DOSFingerprint()   
+    fp = SpectralFingerprint()   
     grid = Grid.create(grid_id = fp.grid_id)
     grid_new = Grid.create(grid_id = fp.grid_id)
     grid_new.e_ref = -100 
@@ -26,7 +26,7 @@ def test_integrate_to_bins():
     
     test_data_x = np.linspace(0, np.pi, num = 10000)
     test_data_y = [dummy_function(x) for x in test_data_x]
-    fp = DOSFingerprint()
+    fp = SpectralFingerprint()
     energies, dos = fp._integrate_to_bins(test_data_x, test_data_y, stepsize=0.01)
     assert 0 in energies
     assert np.isclose(get_area_below_curve([-0.0009,1.0009], lambda _: 1, fp,), 1, atol=1e-12), "integration area was not cut correctly"
@@ -39,7 +39,7 @@ def test_integrate_to_bins():
 def test_convert_dos():
     test_data_x = np.arange(1, 5, step = 0.01)
     test_data_y = test_data_x
-    fp = DOSFingerprint(stepsize=0.001)
+    fp = SpectralFingerprint(stepsize=0.001)
     x, y = fp._convert_dos(test_data_x* electron_volt, [test_data_y/2 / electron_volt, test_data_y/2 / electron_volt])
     assert np.isclose(x,test_data_x).all()
     assert np.isclose(y, test_data_y).all()
@@ -50,14 +50,14 @@ def test_convert_dos():
 def test_serialization():
     test_data_x = np.linspace(0, np.pi, num = 1000)
     test_data_y = [np.sin(x) for x in test_data_x]
-    fp = DOSFingerprint(stepsize=0.001).calculate(test_data_x, test_data_y)
+    fp = SpectralFingerprint(stepsize=0.001).calculate(test_data_x, test_data_y)
     print(fp)
     fp_json = fp.to_dict()
-    fp_again = DOSFingerprint().from_dict(fp_json)
+    fp_again = SpectralFingerprint().from_dict(fp_json)
     assert tanimoto_similarity(fp, fp_again) == 1
 
 def test_adapt_energy_bin_sizes():
-    fp = DOSFingerprint()   
+    fp = SpectralFingerprint()   
     dummy_energy, dummy_dos = fp._integrate_to_bins(np.arange(-10,6,1), np.ones(16)) 
     e, d = fp._adapt_energy_bin_sizes(dummy_energy, dummy_dos, Grid.create(grid_id = fp.grid_id))
     grid = Grid.create(grid_id = fp.grid_id)
@@ -74,7 +74,7 @@ def test_adapt_energy_bin_sizes():
     assert (grid_start, grid_end - 1) == grid.get_grid_indices_for_energy_range([np.round(x, 5) for x in e]) # e is 1 block shorter due to summation
 
 def test_calc_grid_indices():
-    fp = DOSFingerprint()   
+    fp = SpectralFingerprint()   
     grid = Grid.create(grid_id = fp.grid_id)
     dummy_energy, dummy_dos = fp._integrate_to_bins(np.arange(-10,6,1), np.ones(16)) 
     e, _ = fp._adapt_energy_bin_sizes(dummy_energy, dummy_dos, Grid.create(grid_id = fp.grid_id))
@@ -84,7 +84,7 @@ def test_calc_grid_indices():
 
 def test_calc_bit_vector():
     grid = Grid.create()
-    fp = DOSFingerprint(grid_id = grid.get_grid_id())
+    fp = SpectralFingerprint(grid_id = grid.get_grid_id())
     grid_array = grid.grid()
     fp.indices = [0, len(grid_array)-1]
     all_ones = fp._calc_bit_vector([max(grid_column[1]) for grid_column in grid_array], grid)
@@ -94,23 +94,23 @@ def test_calc_bit_vector():
     assert all_half_filled == ('1' * int(grid.n_pix / 2) + '0' * int(grid.n_pix / 2)) * abs(fp.indices[1]+1 - fp.indices[0]) 
 
 def test_compress_bit_string():
-    fp = DOSFingerprint()
+    fp = SpectralFingerprint()
     compressed = fp._compress_binary_fingerprint_string("111000011")
     assert compressed == "3t4f2t", "Compression is not correct"
 
 def test_expand_bit_string():
-    fp = DOSFingerprint()
+    fp = SpectralFingerprint()
     expanded = fp._expand_fingerprint_string("5t3f6t")
     assert expanded == "11111000111111", "Expandsion of compressed bins failed"
 
 def test_get_similarity():
     x = np.round(np.linspace(0,1.1, num=1000), 8)
     grid = Grid.create(grid_type="uniform", e_ref=0.5, cutoff=[-0.5,0.5], delta_e_min=0.01, delta_rho_min=0.015, n_pix=10)
-    fp_a = DOSFingerprint().calculate(x, [1 if x_i <= 0.75 else 0 for x_i in x], grid_id = grid.get_grid_id())
-    fp_b = DOSFingerprint().calculate(x, [1 if x_i > 0.25 else 0 for x_i in x], grid_id = grid.get_grid_id())
+    fp_a = SpectralFingerprint().calculate(x, [1 if x_i <= 0.75 else 0 for x_i in x], grid_id = grid.get_grid_id())
+    fp_b = SpectralFingerprint().calculate(x, [1 if x_i > 0.25 else 0 for x_i in x], grid_id = grid.get_grid_id())
     assert fp_a.get_similarity(fp_b) == 0.5, "Similarity obtained from get_similarity is wrong"
 
 def test_get_bitarray():
-    fp = DOSFingerprint()
+    fp = SpectralFingerprint()
     fp.bins = "3t4f2t"
     assert fp.get_bitarray() == bitarray('111000011')

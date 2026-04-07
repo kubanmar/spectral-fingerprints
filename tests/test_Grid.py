@@ -1,16 +1,11 @@
 import pytest
-import json
-import os
 
-from nomad_dos_fingerprints import Grid
-from nomad_dos_fingerprints.grid import NotCreatedError
+from spectral_fingerprints import Grid
+from spectral_fingerprints.grid import NotCreatedError
 
 @pytest.fixture
 def grid():
     return Grid()
-
-with open(os.path.join(os.path.dirname(__file__), 'grid_test.json'), 'r') as test_data_file:
-    test_grid_data = json.load(test_data_file)
 
 def test_grid_from_lists(grid):
 

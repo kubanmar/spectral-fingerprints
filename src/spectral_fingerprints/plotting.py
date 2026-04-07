@@ -2,14 +2,14 @@ from typing import Union, Iterable
 
 import matplotlib.pyplot as plt
 
-from nomad_dos_fingerprints import DOSFingerprint, Grid
+from spectral_fingerprints import SpectralFingerprint, Grid
 
 def _apply_grid_offset(grid_array: list, offset: float):
     for idx in range(len(grid_array)):
         grid_array[idx][0] += offset
     return grid_array
 
-def plot_fingerprint_in_grid(fingerprint: DOSFingerprint, 
+def plot_fingerprint_in_grid(fingerprint: SpectralFingerprint, 
                              show: bool = True, 
                              label: str = '', 
                              axes: Union[plt.Axes, None] = None, **kwargs) -> None:
@@ -18,7 +18,7 @@ def plot_fingerprint_in_grid(fingerprint: DOSFingerprint,
 
     **Arguments:**
 
-    fingerprint: `nomad_dos_fingerprints.DOSFingerprint`
+    fingerprint: `spectral_fingerprints.SpectralFingerprint`
         Fingerprint to be plotted
 
     **Keyword arguments:**
@@ -75,7 +75,7 @@ def plot_horizontal_lines(grid: Grid,
 
     **Arguments:**
 
-    grid: `nomad_dos_fingerprints.Grid`
+    grid: `spectral_fingerprints.Grid`
         Grid to plot.
 
     **Keyword arguments:**
@@ -132,7 +132,7 @@ def plot_vertical_lines(grid: Grid,
 
     **Arguments:**
 
-    grid: `nomad_dos_fingerprints.Grid`
+    grid: `spectral_fingerprints.Grid`
         Grid to plot.
 
     **Keyword arguments:**
@@ -168,7 +168,7 @@ def plot_grid(grid: Grid,
 
     **Arguments:**
 
-    grid: `nomad_dos_fingerprints.Grid`
+    grid: `spectral_fingerprints.Grid`
         Grid to plot
 
     **Keyword arguments:**

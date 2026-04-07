@@ -26,7 +26,7 @@ def match_fingerprints(fingerprint1, fingerprint2) -> Tuple[bitarray, bitarray]:
 
 def tanimoto_similarity(fingerprint1, fingerprint2):
     """
-    Tanimoto similarity (Tc) between `DOSFingerprint` objects.
+    Tanimoto similarity (Tc) between `SpectralFingerprint` objects.
 
     Evaluates:
 
