@@ -8,6 +8,21 @@ As a similarity measure we use the Tanimoto coefficient [3].
 
 This package is the continuation of https://github.com/kubanmar/dos-fingerprints.
 
+# Installation
+
+The package can be installed via pip:
+
+```bash
+pip install spectral-fingerprints
+```
+or you can clone and install from source:
+
+```bash
+git clone https://github.com/kubanmar/spectral-fingerprints.git
+cd spectral-fingerprints
+pip install .
+```
+
 # Usage
 
 Fingerprints of, e.g., the electronic density-of-states (DOS), are instances of the `SpectralFingerprint()` class and can be calculated by providing, e.g., the energy in [eV] and the DOS in [states/unit cell/eV] to the `calculate()` method. Furthermore, the energy axis can be discretized over a non-uniform grid. For this, specific parameters must be provided. By default, the grid is specialized on the energy range between -10 and 5 eV, thereby emphasizing the upper valence region.
