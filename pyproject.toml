@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name="spectral-fingerprints"
-version="2.1.1"
+version="2.1.2"
 description = "Binary-valued fingerprints for describing spectral properties."
 readme = {file = "README.md", content-type = "text/markdown"}
 authors = [
